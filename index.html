@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<title>Shooter Game</title>
+	</head>
+	<body>
+		<canvas id="cnv" width="800" height="600"></canvas>
+
+		<script src="./js/Player.js"></script>
+		<script src="./js/Bullet.js"></script>
+		<script src="./js/Weapon.js"></script>
+		<script src="./js/Enemy.js"></script>
+		<script src="./js/utils/checkCollision.js"></script>
+		<script src="./js/utils/debug.js"></script>
+		<script src="./js/Game.js"></script>
+
+		<script>
+			window.addEventListener('load', () => {
+				const cnv = document.getElementById('cnv')
+				cnv.width = window.innerWidth
+				cnv.height = window.innerHeight
+				const ctx = cnv.getContext('2d')
+
+				const game = new Game(cnv, ctx)
+
+				function animate() {
+					switch (game.currentState) {
+						case 'RUN':
+							cnv.style.cursor = 'none'
+							ctx.clearRect(0, 0, cnv.width, cnv.height)
+							game.run()
+							break
+
+						case 'GAMEOVER':
+							cnv.style.cursor = 'auto'
+							ctx.clearRect(0, 0, cnv.width, cnv.height)
+							game.gameOver()
+							break
+
+						case 'PAUSE':
+							game.pause()
+							cnv.style.cursor = 'auto'
+							break
+					}
+					requestAnimationFrame(animate, cnv)
+				}
+
+				animate()
+			})
+		</script>
+	</body>
+</html>
